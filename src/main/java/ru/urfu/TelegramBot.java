@@ -14,12 +14,12 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final String telegramBotName;
-    public final AdapterBotMessage adapterBotMessage;
+    public final MessageHandler messageHandler;
 
-    public TelegramBot(String telegramBotName, String token, AdapterBotMessage adapterBotMessage) {
+    public TelegramBot(String telegramBotName, String token, MessageHandler messageHandler) {
         super(token);
         this.telegramBotName = telegramBotName;
-        this.adapterBotMessage = adapterBotMessage;
+        this.messageHandler = messageHandler;
     }
 
     /**
@@ -41,7 +41,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             Message updateMessage = update.getMessage();
             Long chatId = updateMessage.getChatId();
             String messageFromUser = updateMessage.getText();
-            sendMessage(String.valueOf(chatId),  adapterBotMessage.processMessage(messageFromUser));
+            sendMessage(String.valueOf(chatId),  messageHandler.handle(messageFromUser));
         }
     }
 
